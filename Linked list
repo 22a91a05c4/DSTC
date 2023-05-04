@@ -1,0 +1,272 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct Node{
+	int data;
+	struct Node *next;
+};
+typedef struct Node NODE;
+NODE *head=NULL,*tail=NULL,*temp,*NN,*res,*q;
+int c=0,f=0;
+void insert(NODE *NN)
+{
+	if(head==NULL && tail==NULL)
+	{
+		head=NN;
+		tail=NN;
+		c++;
+	}
+	else
+	{
+		tail->next=NN;
+		tail=NN;
+		c++;
+	}
+}
+NODE *dlt()
+{
+	if(head==NULL && tail==NULL)
+	{
+		return NULL;
+	}
+	else if(head==tail)
+	{
+		res=head;
+		head=NULL;
+		tail=NULL;
+		return res;
+	}
+	else
+	{
+		temp=head;
+		while(temp->next->next)
+		{
+			temp=temp->next;
+		}
+		res=tail;
+		temp->next=NULL;
+		tail=temp;
+		return res;
+	}
+}
+void display()
+{
+	if(head==NULL && tail==NULL)
+	{
+		printf("No Nodes\n");
+	}
+	else
+	{
+		temp=head;
+		while(temp)
+		{
+			printf("%d \n",temp->data);
+			temp=temp->next;
+		}
+	}
+}
+void inst_head(NODE *NN)
+{
+	if(head==NULL && tail==NULL)
+	{
+		head=NN;
+		tail=NN;
+	}
+	else
+	{
+		NN->next=head;
+		head=NN;
+	}
+}
+NODE *dlt_head()
+{
+	if(head==NULL && tail==NULL)
+	{
+		res=NULL;
+		return res;
+	}
+	else if(head==tail)
+	{
+		temp=head;
+		head=NULL;
+		tail=NULL;
+		return res;
+	}
+	else
+	{
+		temp=head;
+		head=temp->next;
+		temp->next=NULL;
+		return temp;
+	}
+}
+void reverse()
+{
+	NODE *crn,*prev,*next;
+	if(head==NULL && tail==NULL)
+	{
+		printf("No Nodes\n");
+	}
+	else if(head==tail)
+	{
+		printf("List contains single element");
+	}
+	else
+	{
+		tail=head;
+		crn=head;
+		prev=NULL;
+		next=NULL;
+		while(crn)
+		{
+			next=crn->next;
+			crn->next=prev;
+			prev=crn;
+			crn=next;
+		}
+		head=prev;
+	}
+}
+void ist_pos(NODE *NN,int p)
+{
+	int q;
+	temp=head;
+	if(head==NULL && tail==NULL)
+	{
+		printf("No Nodes\n");
+		head=NN;
+		tail=NN;
+	}
+	else
+	{
+		for(q=1;q<p-1;q++)
+		{
+			temp=temp->next;
+			if(temp==NULL)
+			{
+				printf("Insertion is not possible\n");
+		 	  	f=1;
+			}
+		}
+		if(f==0)
+		{
+			NN->next=temp->next;
+		    temp->next=NN;
+		}
+	}
+}
+NODE *dlt_pos(int p)
+{
+	int q;
+	if(head==NULL && tail==NULL)
+	{
+		return NULL;
+	}
+	temp=head;
+	for(q=1;q<p-1;q++)
+	{
+		if(temp==NULL)
+		{
+			printf("Deletion is not possible\n");
+		}
+		temp=temp->next;
+	}
+	res=temp->next;
+	temp->next=temp->next->next;
+	res->next=NULL;
+	return res;
+}
+int main()
+{
+	int ch,val,p;
+	while(1)
+	{
+		printf("1.insert 2.delete 3.display 4.insert at head 5.delete at head 6.reverse 7.insert at position 8.delete at position 9.exit:");
+		scanf("%d",&ch);
+		if(ch==1)
+		{
+			//insert operation
+			scanf("%d",&val);
+			NN=(NODE *)malloc(sizeof(NODE));
+			NN->data=val;
+			NN->next=NULL;
+			insert(NN);
+		}
+		else if(ch==2)
+		{
+			//delete operation
+			res=dlt();
+			if(res==NULL)
+			{
+				printf("No Nodes\n");
+			}
+			else
+			{
+				printf("%d \n",res->data);
+				free(res);
+			}
+		}
+		else if(ch==3)
+		{
+			//display operation
+			display();
+		}
+		else if(ch==4)
+		{
+			//insert at head operation
+			scanf("%d",&val);
+			NN=(NODE *)malloc(sizeof(NODE));
+			NN->data=val;
+			NN->next=NULL;
+			inst_head(NN);
+		}
+		else if(ch==5)
+		{
+			//delete at head operation
+			temp=dlt_head();
+			if(temp==NULL)
+			{
+				printf("No Nodes \n");
+			}
+			else
+			{
+				printf("%d \n",temp->data);
+				free(temp);
+			}
+		}
+		else if(ch==6)
+		{
+			//reverse operation
+			reverse();
+		}
+		else if(ch==7)
+		{
+			//insert at position
+			scanf("%d",&p);
+		    scanf("%d",&val);
+		    NN=(NODE *)malloc(sizeof(NODE));
+		    NN->data=val;
+		    NN->next=NULL;
+		    ist_pos(NN,p);
+		}
+		else if(ch==8)
+		{
+			//delete at position
+			scanf("%d",&p);
+			res=dlt_pos(p);
+			if(res==NULL)
+			{
+				printf("No Nodes\n");
+			}
+			else
+			{
+				printf("%d \n",res->data);
+				free(res);
+			}
+		}
+		else
+		{
+			//exit operation
+			break;
+		}
+	}
+}
